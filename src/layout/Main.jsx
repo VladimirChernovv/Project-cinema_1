@@ -13,17 +13,25 @@ class Main extends React.Component {
 
   // Метод жизненого цикла
   componentDidMount() {
-    fetch(`http://www.omdbapi.com/?apikey=${API_KEY}&s=matrix`)
+    fetch(`https://www.omdbapi.com/?apikey=${API_KEY}&s=matrix`)
       .then(response => response.json())
       .then(data => this.setState({movies: data.Search, loading: false}))
-  }
+      .catch((err) => {
+        console.error(err);
+        this.setState({loading: false})
+      });
+  };
 
   searchMovies = (str, type = 'all') => {
     this.setState({loading: true});
-    fetch(`http://www.omdbapi.com/?apikey=${API_KEY}&s=${str}${type !== 'all' ? `&type=${type}` : ''}`)
+    fetch(`https://www.omdbapi.com/?apikey=${API_KEY}&s=${str}${type !== 'all' ? `&type=${type}` : ''}`)
       .then(response => response.json())
       .then(data => this.setState({movies: data.Search, loading: false}))
-  }
+      .catch((err) => {
+        console.error(err);
+        this.setState({loading: false})
+      });
+  };
 
   render() {
     const {movies, loading} = this.state;
@@ -37,7 +45,7 @@ class Main extends React.Component {
             <Movies movies={movies}/>
       )}
     </main>
-  }
+  };
 };
 
 export {Main};
